@@ -1,0 +1,21 @@
+{
+    "assemblyID": "29e73413-73ee-44e6-8063-fe923db4d099",
+    "primaryAssembly": "DeletePageRange.dll",
+    "nodeName": "Delete Page Range",
+    "definition": "A custom node that allows workflow designers to delete specific pages in a document",
+    "version": "1.0",
+    "color": "#d91132",
+    "nodeType": 2,
+    "productType": 2,
+    "settings": {
+        "Pages": {
+            "required": true,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        }
+    },
+    "linkLabels": {}
+}

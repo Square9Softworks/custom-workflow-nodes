@@ -51,7 +51,7 @@
   <ItemGroup>
     <Reference Include="Square9.CustomNode">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Square9App_$(Configuration)\Assemblies_Square9\Square9.CustomNode.dll</HintPath>
+      <HintPath>..\..\sdk\Square9.CustomNode.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

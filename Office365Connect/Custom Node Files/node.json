@@ -1,0 +1,12 @@
+{
+    "assemblyID": "d72d54fa-a22a-42e1-b627-94104d34ce9b",
+    "primaryAssembly": "Office365Connect.dll",
+    "nodeName": "Office365Connect",
+    "definition": "A custom node for GlobalCapture workflows used for releasing files to SharePoint and OneDrive",
+    "version": "1.0",
+    "color": "#008b8f",
+    "nodeType": 2,
+    "productType": 2,
+    "settings": null,
+    "linkLabels": {}
+}

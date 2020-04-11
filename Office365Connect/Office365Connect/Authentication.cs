@@ -7,12 +7,12 @@ namespace SharePointRelease
 {
     public static class Authentication
     {
-        public static ICredentials GetUserAuth(string Username, string Password, string InstanceType, string Domain = "")
+        public static ICredentials GetUserAuth(string Username, string Password, InstanceType InstanceType, string Domain = "")
         {
             ICredentials result;
             try
             {
-                bool flag = InstanceType.ToUpper() == "SHAREPOINTONLINE" || InstanceType.ToUpper() == "ONEDRIVE";
+                bool flag = InstanceType == InstanceType.SharepointOnline || InstanceType == InstanceType.OneDrive;
                 if (flag)
                 {
                     SecureString secureString = new SecureString();
@@ -35,7 +35,7 @@ namespace SharePointRelease
             return result;
         }
 
-        public static string Connect(string URL, string Path, string Instance, string User, string Pass, string Domain = "")
+        public static string Connect(string URL, string Path, InstanceType Instance, string User, string Pass, string Domain = "")
         {
             string result;
             try

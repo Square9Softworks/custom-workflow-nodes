@@ -6,122 +6,115 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Xml.Serialization;
+
+using Square9.CustomNode;
 
 namespace SharePointRelease
 {
-    public class SharePointRelease
+    public class SharePointRelease : CustomNode
     {
-        private string processFieldValues;
+        private string ProcessIDText;
+        private Boolean EnforceUniqueName = true;
+        private Boolean AllowOverwrite = false;
 
-        private string mappingFile = "";
+        public Configuration Configuration = new Configuration();
 
-        private string processId;
-
-        private PropertyMapping currentMapping = null;
-
-        private Boolean enforceUniqueName = true;
-        private Boolean allowOverwrite = false;
-
-        public Dictionary<string, string> RunCallAssembly(Dictionary<string, string> Input)
+        public override void Run()
         {
-            this.processFieldValues = "";
-            this.mappingFile = "";
+            if (Process.ProcessType != ProcessType.GlobalCapture)
+            {
+                LogHistory("\"Office 365 Connect\" may only be used for GlobalCapture processes.");
+                return;
+            }
+
             try
             {
-                foreach (KeyValuePair<string, string> current in Input)
-                {
-                    bool flag = current.Value != null && current.Value.Contains("SPXML_");
-                    if (flag)
-                    {
-                        this.mappingFile = Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), current.Value.Substring(6) + ".xml");
-                        bool flag2 = !System.IO.File.Exists(this.mappingFile);
-                        if (flag2)
-                        {
-                            string text = DateTime.Now.ToString() + "Mapping file not found at " + this.mappingFile;
-                            Console.WriteLine(text);
-                            throw new Exception(text);
-                        }
-                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(PropertyMapping));
-                        using (StreamReader streamReader = new StreamReader(this.mappingFile))
-                        {
-                            this.currentMapping = (PropertyMapping)xmlSerializer.Deserialize(streamReader);
-                            streamReader.Close();
-                        }
-                    }
-                    else
-                    {
-                        if (!String.IsNullOrEmpty(current.Value) && current.Value.ToLower() == "bypassuniqueconstraint")
-                            enforceUniqueName = false;
-                        else if (!String.IsNullOrEmpty(current.Value) && current.Value.ToLower() == "allowoverwrite")
-                            allowOverwrite = true;
-
-                        this.processFieldValues = string.Concat(new string[]
-                        {
-                            this.processFieldValues,
-                            current.Key,
-                            ":",
-                            current.Value,
-                            "\t"
-                        });
-                    }
-                }
-
-                if (String.IsNullOrEmpty(this.mappingFile))
-                {
-                    string text2 = DateTime.Now.ToString() + "\tRelease attempted, no SPXML_ property found.\t" + this.processFieldValues;
-                    Console.WriteLine(text2);
-                    throw new Exception(text2);
-                }
+                LoadConfiguration();
             }
             catch (Exception ex)
             {
-                throw new Exception("Property mapping error: " + ex.Message);
+                throw new Exception("Error loading node configuration: " + ex.Message);
             }
-            this.SPRelease(Input);
-            return new Dictionary<string, string>();
+
+            // Always check to ensure the process document is merged before release.
+            Process.Document.MergePages();
+
+            SPRelease();
         }
 
-        private void SPRelease(Dictionary<string, string> Input)
+        private void LoadConfiguration()
         {
-            try
+            Configuration = new Configuration()
             {
-                bool flag = !string.IsNullOrEmpty(this.currentMapping.Config.ProcessIdField);
-                if (flag)
+                Connection = new Connection()
                 {
-                    this.processId = "\tProcess:" + Input[this.currentMapping.Config.ProcessIdField];
-                }
-                else
+                    URL = Settings.GetStringSetting("URL"),
+                    TargetPath = Settings.GetStringSetting("TargetPath"),
+                    InstanceType = InstanceType.SharepointOnline
+                },
+                Credentials = new Credentials()
                 {
-                    this.processId = "";
+                    Domain = Settings.GetStringSetting("Domain"),
+                    Username = Settings.GetStringSetting("Username"),
+                    Password = Settings.GetStringSetting("Password")
+                },
+                Output = new Output()
+                {
+                    FileName = Settings.GetStringSetting("FileName"),
+                    CreateFolder = Settings.GetBooleanSetting("CreateFolder"),
+                    FolderName = Settings.GetStringSetting("FolderName")
+                },
+                FieldMapping = new Dictionary<string, string>()
+            };
+
+            var instanceTypeList = Settings.GetListSetting("InstanceType");
+            for (var i = 0; i < instanceTypeList.Count; i++)
+            {
+                if (instanceTypeList[i] != null && int.TryParse(instanceTypeList[i], out var selectedType))
+                {
+                    Configuration.Connection.InstanceType = (InstanceType)selectedType;
                 }
             }
-            catch
+
+            var processFields = Settings.GetListSetting("ProcessFields");
+            var sharepointNames = Settings.GetListSetting("SharepointNames");
+
+            if (processFields.Count == sharepointNames.Count)
             {
-                Console.WriteLine(DateTime.Now.ToString() + "\tWarning - No process ID specified for Sharepoint logging.  Consider adding a field for storing process id to your workflow.");
-                this.processId = "";
+                for (var i = 0; i < processFields.Count; i++)
+                {
+                    Configuration.FieldMapping.Add(processFields[i], sharepointNames[i]);
+                }
             }
-
-            Console.WriteLine(DateTime.Now.ToString() + processId + "\tStarting O365 Release.");
-            string password = Encrypt.DecryptString(this.currentMapping.Config.Password, "Infinet S9");
-            ICredentials userAuth = Authentication.GetUserAuth(this.currentMapping.Config.Username, password, this.currentMapping.Config.InstanceType, this.currentMapping.Config.Domain);
-            string text = Input["-1"];
-
-            if (!System.IO.File.Exists(text))
+            else
             {
-                String errorMsg = DateTime.Now.ToString() + "\t" + processId + "\tUnable to file for upload.";
+                throw new Exception("There must be a Sharepoint Field Name for each Process Field ID provided.");
+            }
+        }
+
+        private void SPRelease()
+        {
+            ProcessIDText = "\tProcess: " + Process.Id;
+
+            Console.WriteLine(DateTime.Now.ToString() + ProcessIDText + "\tStarting O365 Release.");
+
+            ICredentials userAuth = Authentication.GetUserAuth(Configuration.Credentials.Username, Configuration.Credentials.Password, 
+                Configuration.Connection.InstanceType, Configuration.Credentials.Domain);
+
+            string filePath = Process.Properties.GetSingleValue("FilePath");
+            if (!System.IO.File.Exists(filePath))
+            {
+                String errorMsg = DateTime.Now.ToString() + "\t" + ProcessIDText + "\tUnable to file for upload.";
                 Console.WriteLine(errorMsg);
                 throw new Exception(errorMsg);
             }
 
-            ClientContext clientContext = new ClientContext(this.currentMapping.Config.WebURL);
+            ClientContext clientContext = new ClientContext(Configuration.Connection.URL);
             clientContext.Credentials = userAuth;
 
-            String title = currentMapping.Config.DestinationURL.Trim('/').Split('/')[0];
+            String title = Configuration.Connection.TargetPath.Trim('/').Split('/')[0];
             String destination = "";
-
 
             Folder targetFolder = null;
             Stopwatch stopwatch = new Stopwatch();
@@ -129,62 +122,61 @@ namespace SharePointRelease
             {
                 stopwatch.Start();
 
-                String variablePath = "";
-                if (currentMapping.Config.FolderField != "")
+                string variablePath = "";
+                if (!string.IsNullOrEmpty(Configuration.Output.FolderName))
                 {
-                    variablePath = "/" + Input[currentMapping.Config.FolderField].Trim('/');
+                    variablePath = "/" + Configuration.Output.FolderName.Trim('/');
                 }
 
-                destination = "/" + currentMapping.Config.DestinationURL.Trim('/') + variablePath + "/";
+                destination = "/" + Configuration.Connection.TargetPath.Trim('/') + variablePath + "/";
 
-                targetFolder = EnsureAndGetTargetFolder(clientContext, destination.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList(), currentMapping.Config.FolderCreation);
+                targetFolder = EnsureAndGetTargetFolder(clientContext, destination.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList(), Configuration.Output.CreateFolder);
 
                 stopwatch.Stop();
 
-                Console.WriteLine(DateTime.Now.ToString() + processId + "\tFolder synchronization - " + stopwatch.ElapsedMilliseconds + "ms");
+                Console.WriteLine(DateTime.Now.ToString() + ProcessIDText + "\tFolder synchronization - " + stopwatch.ElapsedMilliseconds + "ms");
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                String errorMsg = DateTime.Now.ToString() + processId + "\tError targeting folder: " + ex.Message;
+                String errorMsg = DateTime.Now.ToString() + ProcessIDText + "\tError targeting folder: " + ex.Message;
                 Console.WriteLine(errorMsg);
                 throw new Exception(errorMsg);
             }
 
-            String fileName;
-            if (String.IsNullOrEmpty(currentMapping.Config.FileNameField))
+            string fileName = "";
+            if (string.IsNullOrEmpty(Configuration.Output.FileName))
             {
-                fileName = "";
+                fileName = Process.Properties.GetSingleValue("OriginalFileName");
             }
             else
             {
-                fileName = Input[currentMapping.Config.FileNameField];
+                fileName = Configuration.Output.FileName;
             }
 
             int num;
-            if (this.currentMapping.Config.InstanceType.Equals("SHAREPOINTONLINE") && (new FileInfo(text).Length > 10485760))
+            if (Configuration.Connection.InstanceType == InstanceType.SharepointOnline && (new FileInfo(filePath).Length > 10485760))
             {
-                num = this.UploadDocumentByChunks(ref clientContext, text, targetFolder, fileName);
+                num = this.UploadDocumentByChunks(ref clientContext, filePath, targetFolder, fileName);
             }
             else
             {
-                num = this.UploadDocument(ref clientContext, text, targetFolder, fileName);
+                num = this.UploadDocument(ref clientContext, filePath, targetFolder, fileName);
             }
 
-
-            List byTitle;
-            byTitle = clientContext.Web.Lists.GetByTitle(title);
+            var byTitle = clientContext.Web.Lists.GetByTitle(title);
             ListItem itemById = byTitle.GetItemById(num);
-            PropertyMappingField[] fields = this.currentMapping.Fields;
-            for (int i = 0; i < fields.Length; i++)
+            var fields = Configuration.FieldMapping;
+            foreach (var mappedField in fields)
             {
-                PropertyMappingField propertyMappingField = fields[i];
                 try
                 {
-                    if (!string.IsNullOrEmpty(Input[propertyMappingField.ID.ToString()]))
+                    var sharepointFieldValue = Process.Properties.GetSingleValue(mappedField.Key);
+                    if (!string.IsNullOrEmpty(sharepointFieldValue))
                     {
-                        propertyMappingField.Value = propertyMappingField.Value.Replace(" ", "_x0020_");
-                        itemById[propertyMappingField.Value] = Input[propertyMappingField.ID.ToString()];
+                        // Sharepoint Online used to require space text replacement, but not anymore.
+                        // fields[mappedField.Key] = mappedField.Value.Replace(" ", "_x0020_");
+                        itemById[mappedField.Value] = sharepointFieldValue;
                     }
                 }
                 catch (Exception ex2)
@@ -192,9 +184,9 @@ namespace SharePointRelease
                     string value2 = string.Concat(new object[]
                     {
                         DateTime.Now.ToString(),
-                        this.processId,
+                        this.ProcessIDText,
                         "\tWarning - Cannot map capture field ",
-                        propertyMappingField.ID,
+                        mappedField.Key,
                         " to Sharepoint: ",
                         ex2.Message
                     });
@@ -211,7 +203,7 @@ namespace SharePointRelease
                 string text4 = string.Concat(new object[]
                 {
                     DateTime.Now.ToString(),
-                    this.processId,
+                    this.ProcessIDText,
                     "\tError updating fields - document with ID ",
                     num,
                     " saved without metadata: ",
@@ -224,7 +216,7 @@ namespace SharePointRelease
             Console.WriteLine(string.Concat(new object[]
             {
                 DateTime.Now.ToString(),
-                this.processId,
+                this.ProcessIDText,
                 "\tEnding Sharepoint release success. Sharepoint document ID: ",
                 num
             }));
@@ -272,7 +264,7 @@ namespace SharePointRelease
                     {
                         serverRelativeUrl = fileName + str + extension;
                         bool stepCount = true;
-                        if (!enforceUniqueName)
+                        if (!EnforceUniqueName)
                             stepCount = false;
 
                         while (stepCount)
@@ -290,7 +282,7 @@ namespace SharePointRelease
                     {
                         if (ex.Message != "File Not Found.")
                         {
-                            String errorMsg = DateTime.Now.ToString() + processId + "\tError targeting folder: " + ex.Message;
+                            String errorMsg = DateTime.Now.ToString() + ProcessIDText + "\tError targeting folder: " + ex.Message;
                             Console.WriteLine(errorMsg);
                             throw new Exception(errorMsg);
                         }
@@ -298,7 +290,7 @@ namespace SharePointRelease
 
                     FileCreationInformation fci = new FileCreationInformation();
                     fci.ContentStream = fileStream;
-                    fci.Overwrite = allowOverwrite;
+                    fci.Overwrite = AllowOverwrite;
                     fci.Url = serverRelativeUrl;
 
                     Microsoft.SharePoint.Client.File newFile = destination.Files.Add(fci);
@@ -311,13 +303,13 @@ namespace SharePointRelease
                     Ctx.ExecuteQuery();
                     stopwatch.Stop();
 
-                    Console.WriteLine(DateTime.Now.ToString() + processId + "\tFile posted - " + stopwatch.ElapsedMilliseconds + "ms");
+                    Console.WriteLine(DateTime.Now.ToString() + ProcessIDText + "\tFile posted - " + stopwatch.ElapsedMilliseconds + "ms");
                     id = listItemAllFields.Id;
                 }
                 catch (Exception ex)
                 {
                     stopwatch.Stop();
-                    String errorText = DateTime.Now.ToString() + processId + "\tError in upload - " + stopwatch.ElapsedMilliseconds + "ms: " + ex.Message;
+                    String errorText = DateTime.Now.ToString() + ProcessIDText + "\tError in upload - " + stopwatch.ElapsedMilliseconds + "ms: " + ex.Message;
                     Console.WriteLine(errorText);
                     throw new Exception(errorText);
                 }
@@ -360,7 +352,7 @@ namespace SharePointRelease
                 {
                     serverRelativeUrl = fileName + str + extension;
                     bool stepCount = true;
-                    if (!enforceUniqueName)
+                    if (!EnforceUniqueName)
                         stepCount = false;
 
                     while (stepCount)
@@ -378,7 +370,7 @@ namespace SharePointRelease
                 {
                     if (ex.Message != "File Not Found.")
                     {
-                        String errorMsg = DateTime.Now.ToString() + processId + "\tError targeting folder: " + ex.Message;
+                        String errorMsg = DateTime.Now.ToString() + ProcessIDText + "\tError targeting folder: " + ex.Message;
                         Console.WriteLine(errorMsg);
                         throw new Exception(errorMsg);
                     }
@@ -426,7 +418,7 @@ namespace SharePointRelease
                                         FileCreationInformation fileInfo = new FileCreationInformation();
                                         fileInfo.ContentStream = contentStream;
                                         fileInfo.Url = serverRelativeUrl;
-                                        fileInfo.Overwrite = allowOverwrite;
+                                        fileInfo.Overwrite = AllowOverwrite;
                                         uploadFile = destination.Files.Add(fileInfo);
 
                                         // Start upload by uploading the first slice. 
@@ -446,7 +438,7 @@ namespace SharePointRelease
                                 else
                                 {
                                     // Get a reference to your file.
-                                    uploadFile = Ctx.Web.GetFileByServerRelativeUrl(destination.ServerRelativeUrl + System.IO.Path.AltDirectorySeparatorChar + serverRelativeUrl);// + System.IO.Path.AltDirectorySeparatorChar + uniqueFileName);
+                                    uploadFile = Ctx.Web.GetFileByServerRelativeUrl(destination.ServerRelativeUrl + Path.AltDirectorySeparatorChar + serverRelativeUrl);// + System.IO.Path.AltDirectorySeparatorChar + uniqueFileName);
 
                                     if (last)
                                     {
@@ -462,7 +454,7 @@ namespace SharePointRelease
                                             Ctx.ExecuteQuery();
 
                                             stopwatch.Stop();
-                                            Console.WriteLine(DateTime.Now.ToString() + processId + "\tFile posted - " + stopwatch.ElapsedMilliseconds + "ms");
+                                            Console.WriteLine(DateTime.Now.ToString() + ProcessIDText + "\tFile posted - " + stopwatch.ElapsedMilliseconds + "ms");
                                             id = listItemAllFields.Id;
                                         }
                                     }
@@ -493,7 +485,7 @@ namespace SharePointRelease
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                String errorText = DateTime.Now.ToString() + processId + "\tError in upload - " + stopwatch.ElapsedMilliseconds + "ms: " + ex.Message;
+                String errorText = DateTime.Now.ToString() + ProcessIDText + "\tError in upload - " + stopwatch.ElapsedMilliseconds + "ms: " + ex.Message;
                 Console.WriteLine(errorText);
                 throw new Exception(errorText);
             }

@@ -65,8 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication.cs" />
-    <Compile Include="Encrypt.cs" />
-    <Compile Include="PropertyMapping.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="SharePointRelease.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

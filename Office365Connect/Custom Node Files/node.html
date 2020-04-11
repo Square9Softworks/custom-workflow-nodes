@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group required">
+						<label for="url" class="control-label">URL</label>
+						<input id="url" class="form-control" type="text" placeholder="https://MyCompany.sharepoint.com/sites/MySite/" setting="URL" setting-type="string" required>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="targetPath" class="control-label">Target Path</label>
+						<input id="targetPath" class="form-control" type="text" placeholder="Documents/MyFolder" setting="TargetPath" setting-type="string">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label">Type</label>
+						<input type="radio" id="sharepointonline" name="type" value="0" setting="InstanceType" setting-type="list" checked>
+						<label for="sharepointonline">SharePoint Online</label>
+						<input type="radio" id="sharepoint" name="type" value="2" setting="InstanceType" setting-type="list">
+						<label for="sharepoint">SharePoint</label>
+						<input type="radio" id="onedrive" name="type" value="1" setting="InstanceType" setting-type="list">
+						<label for="onedrive">OneDrive</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="domain" class="control-label">Domain</label>
+						<input id="domain" class="form-control" type="text" setting="Domain" setting-type="string">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group required">
+						<label for="username" class="control-label">Username</label>
+						<input id="username" class="form-control" type="text" setting="Username" setting-type="string" required>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group required">
+						<label for="password" class="control-label">Password</label>
+						<input id="password" class="form-control" type="password" setting="Password" setting-type="string" required>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="filename" class="control-label">File Name</label>
+						<input id="filename" class="form-control" type="text" setting="FileName" setting-type="string" workflow-properties>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="createFolder" class="control-label">Create Folder</label>
+						<input type="checkbox" id="createFolder" value="false" setting="CreateFolder" setting-type="boolean">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="foldername" class="control-label">Folder Name</label>
+						<input id="foldername" class="form-control" type="text" setting="FolderName" setting-type="string" workflow-properties>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="processFields" class="control-label">Process Fields</label>
+						<input id="processFields" class="form-control" type="text" setting="ProcessFields" setting-type="list" workflow-properties>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="sharepointNames" class="control-label">SharePoint Names</label>
+						<input id="sharepointNames" class="form-control" type="text" setting="SharepointNames" setting-type="list">
+					</div>
+				</div>
+			</div>
+		</div>
+	<body>
+</html>

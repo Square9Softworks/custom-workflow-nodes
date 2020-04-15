@@ -68,13 +68,17 @@ namespace SharePointRelease
                 FieldMapping = new Dictionary<string, string>()
             };
 
-            var instanceTypeList = Settings.GetListSetting("InstanceType");
-            for (var i = 0; i < instanceTypeList.Count; i++)
+            if (Settings.GetBooleanSetting("OnPremInstance"))
             {
-                if (instanceTypeList[i] != null && int.TryParse(instanceTypeList[i], out var selectedType))
-                {
-                    Configuration.Connection.InstanceType = (InstanceType)selectedType;
-                }
+                Configuration.Connection.InstanceType = InstanceType.OnPrem;
+            }
+            else if (Settings.GetBooleanSetting("OneDriveInstance"))
+            {
+                Configuration.Connection.InstanceType = InstanceType.OneDrive;
+            }
+            else
+            {
+                Configuration.Connection.InstanceType = InstanceType.SharepointOnline;
             }
 
             var processFields = Settings.GetListSetting("ProcessFields");

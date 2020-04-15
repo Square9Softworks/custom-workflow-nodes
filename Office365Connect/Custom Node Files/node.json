@@ -1,12 +1,138 @@
 {
     "assemblyID": "d72d54fa-a22a-42e1-b627-94104d34ce9b",
     "primaryAssembly": "Office365Connect.dll",
-    "nodeName": "Office365Connect",
+    "nodeName": "Office 365 Connect",
     "definition": "A custom node for GlobalCapture workflows used for releasing files to SharePoint and OneDrive",
     "version": "1.0",
     "color": "#008b8f",
     "nodeType": 2,
     "productType": 2,
-    "settings": null,
+    "settings": {
+        "URL": {
+            "required": true,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        },
+        "TargetPath": {
+            "required": false,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        },
+        "SharePointOnlineInstance": {
+            "required": false,
+            "Type": 2,
+            "elements": [
+                {}
+            ],
+            "BooleanValue": true
+        },
+        "OnPremInstance": {
+            "required": false,
+            "Type": 2,
+            "elements": [
+                {}
+            ],
+            "BooleanValue": false
+        },
+        "OneDriveInstance": {
+            "required": false,
+            "Type": 2,
+            "elements": [
+                {}
+            ],
+            "BooleanValue": false
+        },
+        "Domain": {
+            "required": false,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        },
+        "Username": {
+            "required": true,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        },
+        "Password": {
+            "required": true,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        },
+        "FileName": {
+            "required": false,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        },
+        "CreateFolder": {
+            "required": false,
+            "Type": 2,
+            "elements": [
+                {
+                    "jQuery34108777315273190051": {
+                        "events": {
+                            "click": [
+                                {
+                                    "type": "click",
+                                    "origType": "click",
+                                    "guid": 16,
+                                    "namespace": false
+                                },
+                                {
+                                    "type": "click",
+                                    "origType": "click",
+                                    "data": null,
+                                    "guid": 15,
+                                    "namespace": ""
+                                }
+                            ]
+                        },
+                        "click": false
+                    }
+                }
+            ],
+            "BooleanValue": false
+        },
+        "FolderName": {
+            "required": false,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        },
+        "ProcessFields": {
+            "required": false,
+            "Type": 3,
+            "elements": [
+                {}
+            ],
+            "ListValue": []
+        },
+        "SharepointNames": {
+            "required": false,
+            "Type": 3,
+            "elements": [
+                {}
+            ],
+            "ListValue": []
+        }
+    },
     "linkLabels": {}
 }

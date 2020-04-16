@@ -178,9 +178,8 @@ namespace SharePointRelease
                     var sharepointFieldValue = Process.Properties.GetSingleValue(mappedField.Key);
                     if (!string.IsNullOrEmpty(sharepointFieldValue))
                     {
-                        // Sharepoint Online used to require space text replacement, but not anymore.
-                        // fields[mappedField.Key] = mappedField.Value.Replace(" ", "_x0020_");
-                        itemById[mappedField.Value] = sharepointFieldValue;
+                        var sharepointFieldName = mappedField.Value.Replace(" ", "_x0020_");
+                        itemById[sharepointFieldName] = sharepointFieldValue;
                     }
                 }
                 catch (Exception ex2)

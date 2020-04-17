@@ -13,6 +13,7 @@ namespace DeletePageRange
             if (Process.ProcessType != ProcessType.GlobalCapture)
             {
                 LogHistory("\"Delete Page Range\" may only be used for GlobalCapture processes.");
+                Process.SetStatus(ProcessStatus.Errored);
                 return;
             }
 
@@ -20,6 +21,7 @@ namespace DeletePageRange
             if (pagesToDelete.Count < 1)
             {
                 LogHistory("No pages were set for deletion.");
+                Process.SetStatus(ProcessStatus.Errored);
                 return;
             }
 
@@ -31,6 +33,7 @@ namespace DeletePageRange
                 if (page > documentPageCount)
                 {
                     LogHistory($"Page to delete ({page}) is outside of the document page range ({documentPageCount}). Page deletion stopped.");
+                    Process.SetStatus(ProcessStatus.Errored);
                     return;
                 }
                 Process.Document.RemovePage(page - 1);
@@ -49,6 +52,8 @@ namespace DeletePageRange
                 var pages = new List<int>();
 
                 var pagesSetting = Settings.GetStringSetting("Pages");
+                LogHistory("Pages set for deletion: " + pagesSetting);
+
                 var pageGroups = pagesSetting.Split(',');
 
                 foreach (var pageGroup in pageGroups)
@@ -90,6 +95,7 @@ namespace DeletePageRange
             catch (Exception ex)
             {
                 LogHistory("Unable to read Pages setting: " + ex.Message);
+                Process.SetStatus(ProcessStatus.Errored);
                 return new List<int>();
             }
         }

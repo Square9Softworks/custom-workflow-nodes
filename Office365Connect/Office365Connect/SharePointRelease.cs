@@ -25,6 +25,7 @@ namespace SharePointRelease
             if (Process.ProcessType != ProcessType.GlobalCapture)
             {
                 LogHistory("\"Office 365 Connect\" may only be used for GlobalCapture processes.");
+                Process.SetStatus(ProcessStatus.Errored);
                 return;
             }
 

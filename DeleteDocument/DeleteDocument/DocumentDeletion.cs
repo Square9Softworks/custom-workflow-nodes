@@ -11,6 +11,7 @@ namespace DeleteDocument
             if (Process.ProcessType != ProcessType.GlobalAction)
             {
                 LogHistory("\"Delete Document\" may only be used for GlobalAction processes.");
+                Process.SetStatus(ProcessStatus.Errored);
                 return;
             }
 
@@ -28,6 +29,7 @@ namespace DeleteDocument
             catch (Exception ex)
             {
                 LogHistory("Unable to initialize Square 9 API connection: " + ex.Message);
+                Process.SetStatus(ProcessStatus.Errored);
                 return;
             }
 
@@ -48,6 +50,7 @@ namespace DeleteDocument
             catch (Exception ex)
             {
                 LogHistory(ex.Message);
+                Process.SetStatus(ProcessStatus.Errored);
                 return;
             }
         }

@@ -48,14 +48,6 @@
             ],
             "BooleanValue": false
         },
-        "Domain": {
-            "required": false,
-            "Type": 0,
-            "elements": [
-                {}
-            ],
-            "StringValue": ""
-        },
         "Username": {
             "required": true,
             "Type": 0,
@@ -66,6 +58,14 @@
         },
         "Password": {
             "required": true,
+            "Type": 0,
+            "elements": [
+                {}
+            ],
+            "StringValue": ""
+        },
+        "Domain": {
+            "required": false,
             "Type": 0,
             "elements": [
                 {}
@@ -85,7 +85,7 @@
             "Type": 2,
             "elements": [
                 {
-                    "jQuery3410448541705697239171": {
+                    "jQuery34106760399327664831": {
                         "events": {
                             "click": [
                                 {

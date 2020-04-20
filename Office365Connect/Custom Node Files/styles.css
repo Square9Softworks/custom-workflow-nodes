@@ -12,3 +12,12 @@
 #typeLabel {
 	padding: 0px 25px 0px 0px !important;
 }
+
+#createFolderLabel {
+	padding: 28px 0px 0px 0px;
+}
+
+.aligned-checkbox {
+	margin-right: 4px;
+	vertical-align: top;
+}

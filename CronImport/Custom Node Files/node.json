@@ -1,7 +1,7 @@
 {
     "assemblyID": "44963952-3b7e-42dc-97d0-6b5595bff01a",
     "primaryAssembly": "CronImport.dll",
-    "nodeName": "Cron Import",
+    "nodeName": "CRON Import",
     "definition": "A custom file import node that uses CRON expressions to run scheduled imports",
     "version": "1.0",
     "color": "#7BC900",

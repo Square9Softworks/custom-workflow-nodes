@@ -4,7 +4,7 @@ $(function() {
 });
 
 function toggleFolderNameState() {
-	if (this.checked) {
+	if ($("#createFolder").is(":checked")) {
 		$("#foldername").removeAttr("disabled");
 	} else {
 		$("#foldername").attr("disabled", true);

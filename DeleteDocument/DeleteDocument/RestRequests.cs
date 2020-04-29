@@ -1,68 +1,20 @@
 ﻿using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
-using System.Text;
 using System.Web;
-using System.Web.Script.Serialization;
 
 namespace DeleteDocument
 {
     public class RestRequests
     {
         public HttpClient Client;
-        public JavaScriptSerializer serializer = new JavaScriptSerializer();
+        public string Token = Guid.Empty.ToString();
+        // Any Square 9 API requests that require a token use an empty GUID. This is a requirement to use the workflow engine's API client.
 
-        public RestRequests(string url, string username, string password)
+        public RestRequests(HttpClient client)
         {
-            var authHeader = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}")));
-
-            Client = new HttpClient()
-            {
-                BaseAddress = new Uri(url.EndsWith("/") ? url : url + "/"),
-                DefaultRequestHeaders = { Authorization = authHeader}
-            };
+            Client = client;
             Client.DefaultRequestHeaders.Add("User-Agent", $"DeleteDocument/{Assembly.GetExecutingAssembly().GetName().Version}");
-        }
-
-        /// <summary>
-        /// Gets a license token if one is available and user authentication is valid.
-        /// </summary>
-        /// <returns></returns>
-        public string GetLicenseToken()
-        {
-            var builder = new UriBuilder(Client.BaseAddress + "api/licenses");
-            var requestUrl = builder.ToString();
-
-            var response = Client.GetAsync(requestUrl).Result;
-            var result = response.Content.ReadAsStringAsync().Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var license = serializer.Deserialize<License>(result);
-                return license.Token;
-            }
-            else
-            {
-                throw new Exception("Unable to get a License: " + result);
-            }
-        }
-
-        /// <summary>
-        /// Releases a license token from the API.
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public void ReleaseLicense(string token)
-        {
-            var builder = new UriBuilder(Client.BaseAddress + $"api/licenses/{token}");
-            var requestUrl = builder.ToString();
-
-            var response = Client.GetAsync(requestUrl).Result;
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = response.Content.ReadAsStringAsync().Result;
-                throw new Exception("Unable to release License token: " + error);
-            }
         }
 
         /// <summary>
@@ -73,12 +25,12 @@ namespace DeleteDocument
         /// <param name="DocumentID"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
-        public string GetDocumentSecureID(int DatabaseID, int ArchiveID, int DocumentID, string Token)
+        public string GetDocumentSecureID(int DatabaseID, int ArchiveID, int DocumentID)
         {
-            var builder = new UriBuilder(Client.BaseAddress + $"api/dbs/{DatabaseID}/archives/{ArchiveID}");
+            var builder = new UriBuilder(Client.BaseAddress + $"dbs/{DatabaseID}/archives/{ArchiveID}");
             var query = HttpUtility.ParseQueryString(builder.Query);
             query["DocumentID"] = DocumentID.ToString();
-            query["token"] = Token;
+            query["token"] = this.Token;
             builder.Query = query.ToString();
             var requestUrl = builder.ToString();
 
@@ -102,11 +54,11 @@ namespace DeleteDocument
         /// <param name="DocumentID"></param>
         /// <param name="Token"></param>
         /// <param name="SecureID"></param>
-        public void DeleteDocument(int DatabaseID, int ArchiveID, int DocumentID, string Token, string SecureID)
+        public void DeleteDocument(int DatabaseID, int ArchiveID, int DocumentID, string SecureID)
         {
-            var builder = new UriBuilder(Client.BaseAddress + $"api/dbs/{DatabaseID}/archives/{ArchiveID}/documents/{DocumentID}/Delete");
+            var builder = new UriBuilder(Client.BaseAddress + $"dbs/{DatabaseID}/archives/{ArchiveID}/documents/{DocumentID}/Delete");
             var query = HttpUtility.ParseQueryString(builder.Query);
-            query["token"] = Token;
+            query["token"] = this.Token;
             query["Secureid"] = SecureID;
             builder.Query = query.ToString();
             var requestUrl = builder.ToString();

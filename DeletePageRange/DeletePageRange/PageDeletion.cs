@@ -6,17 +6,10 @@ using Square9.CustomNode;
 
 namespace DeletePageRange
 {
-    public class PageDeletion : CustomNode
+    public class PageDeletion : CaptureNode
     {
         public override void Run()
         {
-            if (Process.ProcessType != ProcessType.GlobalCapture)
-            {
-                LogHistory("\"Delete Page Range\" may only be used for GlobalCapture processes.");
-                Process.SetStatus(ProcessStatus.Errored);
-                return;
-            }
-
             var pagesToDelete = ReadPagesSetting();
             if (pagesToDelete.Count < 1)
             {

@@ -12,7 +12,7 @@ using Square9.CustomNode;
 
 namespace SharePointRelease
 {
-    public class SharePointRelease : CustomNode
+    public class SharePointRelease : CaptureNode
     {
         private string ProcessIDText;
         private Boolean EnforceUniqueName = true;
@@ -22,13 +22,6 @@ namespace SharePointRelease
 
         public override void Run()
         {
-            if (Process.ProcessType != ProcessType.GlobalCapture)
-            {
-                LogHistory("\"Office 365 Connect\" may only be used for GlobalCapture processes.");
-                Process.SetStatus(ProcessStatus.Errored);
-                return;
-            }
-
             try
             {
                 LoadConfiguration();

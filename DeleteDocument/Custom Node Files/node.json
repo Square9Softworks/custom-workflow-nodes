@@ -9,5 +9,6 @@
   "NodeType": 2,
   "ProductType": 1,
   "Settings": {},
-  "LinkLabels": {}
+  "LinkLabels": {},
+  "Locked": true
 }

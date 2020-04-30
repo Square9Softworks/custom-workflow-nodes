@@ -1,28 +1,28 @@
 {
-    "assemblyID": "44963952-3b7e-42dc-97d0-6b5595bff01a",
-    "primaryAssembly": "CronImport.dll",
-    "nodeName": "CRON Import",
-    "definition": "A custom file import node that uses CRON expressions to run scheduled imports",
-    "version": "1.0",
-    "color": "#7BC900",
-    "nodeType": 1,
-    "productType": 2,
-    "settings": {
-        "SourcePath": {
-            "required": true,
-            "Type": 0,
-            "elements": [
-                {}
-            ],
-            "StringValue": ""
-        },
-        "CronExpression": {
-            "required": true,
-            "Type": 0,
-            "elements": [
-                {}
-            ],
-            "StringValue": ""
-        }
+  "AssemblyID": "44963952-3b7e-42dc-97d0-6b5595bff01a",
+  "PrimaryAssembly": "CronImport.dll",
+  "NodeName": "CRON Import",
+  "Tags": null,
+  "Definition": "A custom file import node that uses CRON expressions to run scheduled imports",
+  "Version": "1.0",
+  "Color": "#7BC900",
+  "NodeType": 1,
+  "ProductType": 2,
+  "Settings": {
+    "SourcePath": {
+      "Type": 0,
+      "StringValue": "",
+      "IntValue": null,
+      "BooleanValue": null,
+      "ListValue": null
+    },
+    "CronExpression": {
+      "Type": 0,
+      "StringValue": "",
+      "IntValue": null,
+      "BooleanValue": null,
+      "ListValue": null
     }
+  },
+  "LinkLabels": null
 }

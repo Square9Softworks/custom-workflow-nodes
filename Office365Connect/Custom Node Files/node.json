@@ -4,7 +4,7 @@
   "NodeName": "Office 365 Connect",
   "Tags": null,
   "Definition": "A custom node for GlobalCapture workflows used for releasing files to SharePoint and OneDrive",
-  "Version": "1.0",
+  "Version": "0.201",
   "Color": "#008b8f",
   "NodeType": 2,
   "ProductType": 2,

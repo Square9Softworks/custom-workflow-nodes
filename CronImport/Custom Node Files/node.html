@@ -2,24 +2,27 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="bootstrap-3.4.1.min.css">
+		<script src="jquery-3.4.1.min.js"></script>
+		<script src="bootstrap-3.4.1.min.js"></script>
+		
+		<script src="script.js"></script>
 		<link rel="stylesheet" href="styles.css">
 	</head>
 	<body>
 		<div class="modal-body">
 			<div class="row">
-				<div class="col-md-12">
-					<div class="form-group required">
-						<label for="sourcePath" class="control-label">Source Path</label>
-						<input id="sourcePath" class="form-control" type="text" setting="SourcePath" setting-type="string" required>
-					</div>
+				<div class="col-md-12 form-group required">
+					<label for="sourcePath" class="control-label">Source Path</label>
+					<input id="sourcePath" class="form-control" type="text" setting="SourcePath" setting-type="string" required>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
-					<div class="form-group required">
-						<label for="cronExpression" class="control-label">CRON Expression</label>
-						<input id="cronExpression" class="form-control" type="text" placeholder="0 12 * * 1-5" setting="CronExpression" setting-type="string" required>
-					</div>
+				<div class="col-xs-10 form-group required">
+					<label for="cronExpression" class="control-label">CRON Expression</label>
+					<input id="cronExpression" class="form-control" type="text" placeholder="0 12 * * 1-5" setting="CronExpression" setting-type="string" required>
+				</div>
+				<div class="col-auto form-group">
+					<button id="cronButton" class="btn btn-default" onclick="openCronUrl()">Generate</button>
 				</div>
 			</div>
 		</div>

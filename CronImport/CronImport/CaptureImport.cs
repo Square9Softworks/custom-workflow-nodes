@@ -27,12 +27,13 @@ namespace CronImport
                 throw new FormatException("Provided CRON Expression is not valid.");
             }
 
-            if (DateTime.UtcNow.Ticks >= nextTime.Value.Ticks)
+            var currentTime = DateTime.UtcNow;
+            if (currentTime.Ticks >= nextTime.Value.Ticks)
             {
                 var importDirectory = Settings.GetStringSetting("SourcePath");
                 var filesToImport = Directory.GetFiles(importDirectory).ToList();
 
-                RecordLastRunTime(DateTime.UtcNow);
+                RecordLastRunTime(currentTime);
 
                 return filesToImport;
             }
@@ -49,7 +50,8 @@ namespace CronImport
             if (File.Exists(LastRunFile))
             {
                 var lastRunDateTime = File.ReadAllText(LastRunFile);
-                return DateTime.Parse(lastRunDateTime).ToUniversalTime();
+                var lastRunDateTimeLocal = DateTime.Parse(lastRunDateTime); // DateTime parse returns local time, so it needs to be converted to UTC.
+                return new DateTime(lastRunDateTimeLocal.Ticks, DateTimeKind.Utc);
             }
             else
             {

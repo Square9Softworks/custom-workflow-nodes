@@ -4,7 +4,7 @@
   "NodeName": "Delete Page Range",
   "Tags": null,
   "Definition": "A custom node that allows workflow designers to delete specific pages in a document",
-  "Version": "1.0",
+  "Version": "0.201",
   "Color": "#d91132",
   "NodeType": 2,
   "ProductType": 2,

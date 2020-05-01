@@ -4,7 +4,7 @@
   "NodeName": "Delete Document",
   "Tags": null,
   "Definition": "A custom node that allows workflow designers to delete GlobalSearch documents",
-  "Version": "1.0",
+  "Version": "0.201",
   "Color": "#222222",
   "NodeType": 2,
   "ProductType": 1,

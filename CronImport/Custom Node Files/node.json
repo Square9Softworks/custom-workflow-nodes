@@ -4,7 +4,7 @@
   "NodeName": "CRON Import",
   "Tags": null,
   "Definition": "A custom file import node that uses CRON expressions to run scheduled imports",
-  "Version": "1.0",
+  "Version": "0.201",
   "Color": "#7BC900",
   "NodeType": 1,
   "ProductType": 2,
@@ -24,5 +24,6 @@
       "ListValue": null
     }
   },
-  "LinkLabels": null
+  "LinkLabels": null,
+  "Locked": true
 }

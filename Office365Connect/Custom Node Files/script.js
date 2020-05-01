@@ -1,3 +1,9 @@
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({
+        placement : 'bottom'
+    });
+});
+
 $(function() {
 	toggleFolderNameState();
 	$("#createFolder").click(toggleFolderNameState);

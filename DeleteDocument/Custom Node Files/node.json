@@ -2,7 +2,7 @@
   "AssemblyID": "8a115f7c-ab76-4adf-ba4b-0dff78966209",
   "PrimaryAssembly": "DeleteDocument.dll",
   "NodeName": "Delete Document",
-  "Tags": null,
+  "Tags": ["GlobalAction", "Delete", "Document"],
   "Definition": "A custom node that allows workflow designers to delete GlobalSearch documents",
   "Version": "0.201",
   "Color": "#222222",

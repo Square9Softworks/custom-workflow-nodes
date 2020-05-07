@@ -20,7 +20,7 @@ namespace CronImport
             var cronExpression = CronExpression.Parse(savedExpression);
 
             var lastRunTime = GetLastRunTime();
-            DateTime? nextTime = cronExpression.GetNextOccurrence(lastRunTime);
+            DateTime? nextTime = cronExpression.GetNextOccurrence(lastRunTime, TimeZoneInfo.Local); // Run the comparison using local time.
 
             if (!nextTime.HasValue)
             {
@@ -42,7 +42,7 @@ namespace CronImport
         }
 
         /// <summary>
-        /// Retrieves the last recorded time the workflow import was run.
+        /// Retrieves the last recorded time (int UTC) the workflow import was run.
         /// </summary>
         /// <returns></returns>
         private DateTime GetLastRunTime()
@@ -64,7 +64,7 @@ namespace CronImport
         }
 
         /// <summary>
-        /// Updates the workflow import's last run time.
+        /// Updates the workflow import's last run time (in UTC).
         /// </summary>
         /// <param name="dateTime"></param>
         private void RecordLastRunTime(DateTime dateTime)

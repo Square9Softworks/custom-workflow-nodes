@@ -2,7 +2,7 @@
   "AssemblyID": "44963952-3b7e-42dc-97d0-6b5595bff01a",
   "PrimaryAssembly": "CronImport.dll",
   "NodeName": "CRON Import",
-  "Tags": null,
+  "Tags": ["GlobalCapture", "CRON", "Importer", "Schedule"],
   "Definition": "A custom file import node that uses CRON expressions to run scheduled imports",
   "Version": "0.202",
   "Color": "#7BC900",

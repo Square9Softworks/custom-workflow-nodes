@@ -2,7 +2,7 @@
   "AssemblyID": "29e73413-73ee-44e6-8063-fe923db4d099",
   "PrimaryAssembly": "DeletePageRange.dll",
   "NodeName": "Delete Page Range",
-  "Tags": null,
+  "Tags": ["GlobalCapture", "Delete", "Page"],
   "Definition": "A custom node that allows workflow designers to delete specific pages in a document",
   "Version": "0.201",
   "Color": "#d91132",

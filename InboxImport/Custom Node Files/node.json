@@ -2,7 +2,7 @@
   "AssemblyID": "0c461e0d-91db-400a-8843-9abfccaee7e8",
   "PrimaryAssembly": "InboxImport.dll",
   "NodeName": "Inbox Import",
-  "Tags": null,
+  "Tags": ["GlobalAction", "Inbox", "Importer", "Archive"],
   "Definition": "A custom node that imports Inbox documents to an Archive for use in a GlobalAction workflow.",
   "Version": "0.201",
   "Color": "#4278eb",
@@ -24,5 +24,6 @@
       "ListValue": null
     }
   },
-  "LinkLabels": null
+  "LinkLabels": null,
+  "Locked": true
 }

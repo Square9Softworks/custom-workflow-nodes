@@ -3,7 +3,7 @@
   "PrimaryAssembly": "InboxImport.dll",
   "NodeName": "Inbox Import",
   "Tags": ["GlobalAction", "Inbox", "Importer", "Archive"],
-  "Definition": "A custom node that imports Inbox documents to an Archive for use in a GlobalAction workflow.",
+  "Definition": "A custom node that imports Inbox documents to an Archive for use in a GlobalAction workflow",
   "Version": "0.201",
   "Color": "#4278eb",
   "NodeType": 1,

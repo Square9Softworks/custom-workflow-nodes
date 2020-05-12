@@ -14,5 +14,6 @@ function toggleFolderNameState() {
 		$("#foldername").removeAttr("disabled");
 	} else {
 		$("#foldername").attr("disabled", true);
+		$("#foldername").val("");
 	}
 }

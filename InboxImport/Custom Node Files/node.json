@@ -4,7 +4,7 @@
   "NodeName": "Inbox Import",
   "Tags": ["GlobalAction", "Inbox", "Importer", "Archive"],
   "Definition": "A custom node that imports Inbox documents to an Archive for use in a GlobalAction workflow",
-  "Version": "0.201",
+  "Version": "0.202",
   "Color": "#4278eb",
   "NodeType": 1,
   "ProductType": 1,
@@ -14,16 +14,18 @@
       "StringValue": "",
       "IntValue": null,
       "BooleanValue": null,
-      "ListValue": null
+      "ListValue": null,
+      "Hidden": false
     },
     "ArchiveName": {
       "Type": 0,
       "StringValue": "",
       "IntValue": null,
       "BooleanValue": null,
-      "ListValue": null
+      "ListValue": null,
+      "Hidden": false
     }
   },
-  "LinkLabels": null,
+  "LinkLabels": {},
   "Locked": true
 }

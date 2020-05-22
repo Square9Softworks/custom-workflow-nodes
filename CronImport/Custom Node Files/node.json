@@ -4,7 +4,7 @@
   "NodeName": "CRON Import",
   "Tags": ["GlobalCapture", "CRON", "Importer", "Schedule"],
   "Definition": "A custom file import node that uses CRON expressions to run scheduled imports",
-  "Version": "0.202",
+  "Version": "0.203",
   "Color": "#7BC900",
   "NodeType": 1,
   "ProductType": 2,
@@ -14,16 +14,18 @@
       "StringValue": "",
       "IntValue": null,
       "BooleanValue": null,
-      "ListValue": null
+      "ListValue": null,
+      "Hidden": false
     },
     "CronExpression": {
       "Type": 0,
       "StringValue": "",
       "IntValue": null,
       "BooleanValue": null,
-      "ListValue": null
+      "ListValue": null,
+      "Hidden": false
     }
   },
-  "LinkLabels": null,
+  "LinkLabels": {},
   "Locked": true
 }

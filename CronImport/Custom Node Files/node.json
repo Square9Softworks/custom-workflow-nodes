@@ -1,0 +1,31 @@
+{
+  "AssemblyID": "44963952-3b7e-42dc-97d0-6b5595bff01a",
+  "PrimaryAssembly": "CronImport.dll",
+  "NodeName": "CRON Import",
+  "Tags": ["GlobalCapture", "CRON", "Importer", "Schedule"],
+  "Definition": "A custom file import node that uses CRON expressions to run scheduled imports",
+  "Version": "0.203",
+  "Color": "#7BC900",
+  "NodeType": 1,
+  "ProductType": 2,
+  "Settings": {
+    "SourcePath": {
+      "Type": 0,
+      "StringValue": "",
+      "IntValue": null,
+      "BooleanValue": null,
+      "ListValue": null,
+      "Hidden": false
+    },
+    "CronExpression": {
+      "Type": 0,
+      "StringValue": "",
+      "IntValue": null,
+      "BooleanValue": null,
+      "ListValue": null,
+      "Hidden": false
+    }
+  },
+  "LinkLabels": {},
+  "Locked": true
+}

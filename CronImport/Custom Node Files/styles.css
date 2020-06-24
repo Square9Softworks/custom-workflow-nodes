@@ -1,0 +1,9 @@
+.form-group.required .control-label:after {
+	content: " *";
+	color: red;
+}
+
+#cronButton
+{
+	margin-top: 25px;
+}

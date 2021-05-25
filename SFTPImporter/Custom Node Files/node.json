@@ -1,0 +1,16 @@
+{
+	"NodeName": "Import SFTP", 
+    "Version" : "0.206", 
+    "Definition" : "A Custom Importer for importing files from SFTP servers into GlobalCapture",
+    "Color" : "#832ac9", 
+    "NodeType" : 1, 
+    "ProductType" : 2, 
+    "Locked" : true,
+    "Tags" : ["GlobalCapture","SFTP", "Importer"],
+    "Settings" : {}, 
+    "PrimaryAssembly" : "SFTPImporter.dll", 
+    "LinkLabels" : {
+                    "OUT":"Imported from Host"
+                    },
+    "DataValidation" : true
+}

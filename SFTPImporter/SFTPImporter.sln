@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFTPImporter", "SFTPImporter\SFTPImporter.csproj", "{1CA50C1D-085C-4418-B582-3C167F0387CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CA50C1D-085C-4418-B582-3C167F0387CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CA50C1D-085C-4418-B582-3C167F0387CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CA50C1D-085C-4418-B582-3C167F0387CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CA50C1D-085C-4418-B582-3C167F0387CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CD66AAF-60E0-47B3-B441-062FB2CEC5C5}
+	EndGlobalSection
+EndGlobal

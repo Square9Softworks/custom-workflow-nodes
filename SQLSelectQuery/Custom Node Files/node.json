@@ -19,7 +19,7 @@
     "Query"
   ],
   "Definition": "A Custom Call Assembly for Querying a SQL Database and returning the value to a given property.",
-  "Version": "0.204",
+  "Version": "1.0",
   "Color": "#ffa200",
   "NodeType": 3,
   "ProductType": 3,

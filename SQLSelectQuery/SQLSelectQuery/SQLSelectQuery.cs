@@ -33,6 +33,7 @@ namespace SQLSelectQuery
                 {
                     sqlQuery = sqlQuery.Replace("#ARCHIVEID#", actionProcess.Document.ArchiveId.ToString());
                     sqlQuery = sqlQuery.Replace("#DOCUMENTID#", actionProcess.Document.DocumentId.ToString());
+                    sqlQuery = sqlQuery.Replace("#DOCID#", actionProcess.Document.DocumentId.ToString());
                     sqlQuery = sqlQuery.Replace("#DATABASEID#", actionProcess.Document.DatabaseId.ToString());
                 }
 

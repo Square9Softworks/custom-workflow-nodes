@@ -54,21 +54,18 @@ namespace SQLSelectQuery
                     command.Connection = connection;
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        if (reader.Read())
+                        if (reader.Read() && reader[0] != null && !String.IsNullOrEmpty(reader[0].ToString()))
                         {
-                            if (reader[0] != null && !String.IsNullOrEmpty(reader[0].ToString()))
-                            {
-                                Process.Properties.SetSingleProperty(returnField, reader[0].ToString());
-                                LogHistory($"Set Field {returnField} to value {reader[0].ToString()}");
-                                SetNextNodeByLinkName("FOUND");
-                            }
-                            else
-                            {
-                                SetNextNodeByLinkName("NODATA");
-                                LogHistory($"Data for {returnField} Property not found using SQL Statement:{sqlQuery}");
-                                return;
-                            }
+                            Process.Properties.SetSingleProperty(returnField, reader[0].ToString());
+                            LogHistory($"Set Field {returnField} to value {reader[0].ToString()}");
+                            SetNextNodeByLinkName("FOUND");
                         }
+                        else
+                        {
+                            SetNextNodeByLinkName("NODATA");
+                            LogHistory($"Data for {returnField} Property not found using SQL Statement:{sqlQuery}");
+                            return;
+                        }                       
                     }
                     connection.Close();
                 }

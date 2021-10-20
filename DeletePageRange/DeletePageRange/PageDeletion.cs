@@ -47,6 +47,12 @@ namespace DeletePageRange
                 var pagesSetting = Settings.GetStringSetting("Pages");
                 LogHistory("Pages set for deletion: " + pagesSetting);
 
+                if (pagesSetting.Trim().ToUpper() == "ALL")
+                {
+                    var pageCount = Process.Document.GetPages().Count();
+                    pagesSetting = "1-" + pageCount;
+                }
+
                 var pageGroups = pagesSetting.Split(',');
 
                 foreach (var pageGroup in pageGroups)

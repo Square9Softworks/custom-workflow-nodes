@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="bootstrap.min.css">
+<div class="modal-body">
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Connection String
+                <req>*</req>
+            </label>
+            <input type="text" class="form-control" required setting="ConnectionString" setting-type="string" placeholder="Connection String">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>SQL Statement
+                <req>*</req>
+            </label>
+            <input type="text" class="form-control" required setting="SqlStatement" setting-type="string" placeholder="SQL Statement">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>Return Field
+                <req>*</req>
+            </label>
+            <select id="test" data-toggle="tooltip" required workflow-properties setting="ReturnField" setting-type="string" class="form-control">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+</div>
+</div>

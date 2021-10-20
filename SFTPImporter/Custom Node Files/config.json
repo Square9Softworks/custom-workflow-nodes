@@ -1,0 +1,7 @@
+{
+	//SFTP Default values will be carried out for all uses of the Import SFTP Node
+	//Default User name, Modal value is used if not included.
+	"User": "",
+	//Default Password, Modal value is used if not included.
+	"Password": ""
+}

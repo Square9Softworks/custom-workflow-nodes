@@ -1,0 +1,23 @@
+{
+  "AssemblyID": "1aac6ca6-4d37-4d68-85ba-90243e390308",
+  "PrimaryAssembly": "ErrorImport.dll",
+  "NodeName": "Error Import",
+  "Tags": [ "GlobalCapture", "GlobalAction", "Import", "Error" ],
+  "Definition": "Imports processes from the current workflow last errored in the node name specified, if no node is specified it imports all errored processes from current workflow. Must be used with version 2.3.0.125 or higher.",
+  "Version": "1.0",
+  "Color": "#db2902",
+  "NodeType": 1,
+  "ProductType": 3,
+  "Settings": {
+    "TargetNode": {
+      "Type": 0,
+      "StringValue": "",
+      "IntValue": null,
+      "BooleanValue": null,
+      "ListValue": null,
+      "Hidden": false
+    }
+  },
+  "LinkLabels": {},
+  "Locked" :  true
+}
